@@ -9,7 +9,7 @@ var app = express();
 
 app.use(bodyParser.json());
 
-// CREATE a Todo
+// CREATE Todos
 app.post('/todos', (req, res) => {
 	var todo = new Todo({
 		text: req.body.text
@@ -26,7 +26,20 @@ app.post('/todos', (req, res) => {
 	});
 });
 
+// READ Todos
+app.get('/todos', (req,res) => {
+	Todo.find().then(
+		(todos) => {
+			res.send({todos});
+		},
+		(e) => {
+			res.status(400).send(e);
+		});
+});
 
+
+
+// START SERVER
 app.listen(3000, () => {
 	console.log('Server listening on port 3000');
 });
