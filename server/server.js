@@ -24,7 +24,7 @@ app.post('/todos', (req, res) => {
 		},
 		(err) => {
 			res.status(400).send(err);
-			console.log('Failed to save todo', err);
+			console.log('Failed to save todo');
 	});
 });
 
