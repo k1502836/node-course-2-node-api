@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 // ##############################################
-// CREATE Todos
+// CREATE Todo
 app.post('/todos', (req, res) => {
 	var todo = new Todo({
 		text: req.body.text
@@ -30,7 +30,7 @@ app.post('/todos', (req, res) => {
 });
 
 // ##############################################
-// READ Todos
+// LIST Todos
 app.get('/todos', (req,res) => {
 	Todo.find().then(
 		(todos) => {
@@ -42,7 +42,7 @@ app.get('/todos', (req,res) => {
 });
 
 // ##############################################
-// READ specific Todo
+// READ Todo
 app.get('/todos/:id', (req, res) => {
 	var id = req.params.id;
 
@@ -51,6 +51,44 @@ app.get('/todos/:id', (req, res) => {
 	}
 
 	Todo.findById(id).then((todo) =>{
+		if(!todo) {
+			return res.status(404).send();
+		}
+		res.send({todo});
+	}).catch((e) => {
+		res.status(400).send();
+	});
+});
+
+// ##############################################
+// UPDATE Todo
+// app.get('/todos/:id', (req, res) => {
+// 	var id = req.params.id;
+
+// 	if(!ObjectID.isValid(id)){
+// 		return res.status(404).send();
+// 	}
+
+// 	Todo.findById(id).then((todo) =>{
+// 		if(!todo) {
+// 			return res.status(404).send();
+// 		}
+// 		res.send({todo});
+// 	}).catch((e) => {
+// 		res.status(400).send();
+// 	});
+// });
+
+// ##############################################
+// DELETE Todo
+app.delete('/todos/:id', (req, res) => {
+	var id = req.params.id;
+
+	if(!ObjectID.isValid(id)){
+		return res.status(404).send();
+	}
+
+	Todo.findByIdAndRemove(id).then((todo) =>{
 		if(!todo) {
 			return res.status(404).send();
 		}
